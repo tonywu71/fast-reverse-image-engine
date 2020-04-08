@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt # afin d'afficher l'image
-import numpy as np  # sert �  utiliser des matrices
-import pickle   # sert �  importer l'image de CIFAR-10
+import numpy as np  # sert à  utiliser des matrices
+import pickle   # sert à  importer l'image de CIFAR-10
 
 # transforme l'ensemble des images en dictionnaire
 def unpickle(file):
@@ -12,7 +12,7 @@ def unpickle(file):
 def image(index_image, file):
     picture = np.zeros((32, 32, 3), dtype=np.uint8)
     dict = unpickle(file)
-    # parcour des trois couleurs diff�rentes
+    # parcour des trois couleurs différentes
     for i in range(3):
         # parcour des des colonnes
         for j in range(1024*i, 1024*(i+1)):
