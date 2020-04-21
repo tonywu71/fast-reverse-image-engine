@@ -26,8 +26,9 @@
         const btn = document.getElementById("btnAdd")
         const url = document.getElementById("url")
         const x = document.getElementById("x")
+        const url_page = window.location.href;
 
-        fetch("http://10.50.49.19:8080/list")
+        fetch(url_page+"list")
         .then(response => response.json())
         .then(jsonResponse => jsonResponse.forEach(link => {
 
@@ -56,7 +57,7 @@
           if(links.value == 'Link'){
 
                 let link = url.value;
-                fetch(`http://10.50.49.19:8080/list?link=${link}`, {"method" : "POST"})
+                fetch(url_page+`list?link=${link}`, {"method" : "POST"})
                 .then(response => response.json())
                 .then(jsonResponse => jsonResponse.forEach(link => {
 
