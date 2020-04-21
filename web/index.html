@@ -7,9 +7,10 @@
     <title>Image Research Engine</title>
 </head>
 <body>
-    <label>Images</label>
+    <label>Options</label>
     <select id = 'links'></select>
-    <label>Image Url</label><input type = 'text' id = 'url'><button id = 'btnAdd'>search images</button>
+    <label for = 'url' id = 'l1'>Image Url: </label><input type = 'text' id = 'url'>
+    <button id = 'btnAdd'>search images</button>
 
     <div id = 'x'></div>
 
@@ -21,13 +22,12 @@
           }
       }
 
-
         const links = document.getElementById("links")
         const btn = document.getElementById("btnAdd")
         const url = document.getElementById("url")
         const x = document.getElementById("x")
 
-        fetch("http://localhost:8080/list")
+        fetch("http://10.50.49.19:8080/list")
         .then(response => response.json())
         .then(jsonResponse => jsonResponse.forEach(link => {
 
@@ -37,12 +37,26 @@
 
         }))
 
+        links.onchange = function(){
+          var option = links.value
+          var label = document.getElementById('l1')
+
+          if(option == 'Link'){
+            url.type = 'txt'
+            label.innerHTML = 'Image URL: '
+          }else{
+            url.type = 'file'
+            label.innerHTML = 'Choose Image: '
+          }
+        }
+
 
         btn.addEventListener("click", e => {
+
+          if(links.value == 'Link'){
+
                 let link = url.value;
-                removeOptions(links)
-                //removeOptions(x)
-                fetch(`http://localhost:8080/list?fruit=${link}`, {"method" : "POST"})
+                fetch(`http://10.50.49.19:8080/list?link=${link}`, {"method" : "POST"})
                 .then(response => response.json())
                 .then(jsonResponse => jsonResponse.forEach(link => {
 
@@ -52,17 +66,40 @@
                     img.width="500"
                     x.appendChild(img)
 
-                    let o = document.createElement("option")
-                    o.textContent = link
-                    links.appendChild(o)
+                  }))
+            }else{
 
-                }))
+                var file = url.files[0];
+                var formData = new FormData();
+                formData.append('fileImage', file);
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'json'
+                xhr.onreadystatechange = function() {
+                  if (xhr.readyState === 4) {
+                    let res = xhr.response;
+                    for(var link in res){
+                        let img = document.createElement("img");
+                        img.src = res[link];
+                        img.height = "500"
+                        img.width="500"
+                        x.appendChild(img)
+
+                      }
+
+                  }
+                }
+
+                xhr.open('POST', '/upload', true);
+                xhr.send(formData);
+            }
+
+                })
 
 
 
 
 
-        })
+
 
 
 

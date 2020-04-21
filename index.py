@@ -31,7 +31,7 @@ def get_similar_item(img, lsh_variable, n_items=5,url = False):
 
 lsh = pickle.load(open('LSHash/lsh.p', "rb"))
 
-links = ['teste','teste2']
+options = ['Link', 'Upload Image']
 
 class basicRequestHandler(tornado.web.RequestHandler):
     def get(self):
@@ -40,28 +40,55 @@ class basicRequestHandler(tornado.web.RequestHandler):
 class linkRequestHandler(tornado.web.RequestHandler):
     def get(self):
         #print(links)
-        self.write(json.dumps(links))
+        self.write(json.dumps(options))
 
     def post(self):
-        link_image = self.get_arguments("fruit")[0]
+        link_image = self.get_arguments("link")[0]
         print(link_image)
         links = []
         #links.append(link_image)
         res = get_similar_item(link_image,lsh, url = True)
-        print(res)
+        #print(res)
         for i in res:
             links.append(i[0][1])
+
+        #print(links)
+        self.write(json.dumps(links))
+
+class uploadRequestHandler(tornado.web.RequestHandler):
+    def post(self):
+        files = self.request.files["fileImage"]
+        for f in files:
+            if(f == None):
+                self.render('index.html')
+            img = Image.open(bio(f.body))
+            #img.show()
+            img = preprocess_image(img)
+            img = np.expand_dims(img,axis = 0)
+
+            links = []
+
+            res = get_similar_item(img,lsh, url = False)
+
+            for i in res:
+                links.append(i[0][1])
 
         print(links)
         self.write(json.dumps(links))
 
 
+    def get(self):
+        self.render("index.html")
+
+
+
 if (__name__ == "__main__"):
     app = tornado.web.Application([
         ("/", basicRequestHandler),
-        ("/list",linkRequestHandler )
+        ("/list",linkRequestHandler ),
+        ("/upload",uploadRequestHandler)
     ])
 
-    app.listen(8080)
+    app.listen(8080,'10.50.49.19')
     print("Listening on port 8080")
     tornado.ioloop.IOLoop.instance().start()
