@@ -21,6 +21,7 @@ else:
     from PIL import Image
     from lshash import LSHash
     import pickle
+    fe = feature_extractor(model_path='feature_extractor/models/feature_extractor_90.json',weights_path='feature_extractor/models/feature_extractor_90.h5')
 
 def get_similar_item(img, lsh_variable, n_items=5,url = False):
     if(url):
@@ -36,10 +37,9 @@ def get_similar_item(img, lsh_variable, n_items=5,url = False):
     return response
 
 def main():
-    fe = feature_extractor(model_path='feature_extractor/models/feature_extractor_90.json',weights_path='feature_extractor/models/feature_extractor_90.h5')
-    lsh = pickle.load(open('LSH/lsh.p', "rb"))
+    lsh = pickle.load(open('LSHash/lsh.p', "rb"))
 
-    if(sys.argv[1] == '-l'):
+    if(sys.argv[1]       == '-l'):
         res = get_similar_item(sys.argv[2],lsh,url=True)
 
     elif(sys.argv[1] == '-p'):
