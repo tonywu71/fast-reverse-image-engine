@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Image Research Engine</title>
+</head>
+<body>
+    <label>Images</label>
+    <select id = 'links'></select>
+    <label>Image Url</label><input type = 'text' id = 'url'><button id = 'btnAdd'>search images</button>
+
+    <div id = 'x'></div>
+
+    <script>
+      function removeOptions(selectElement) {
+          var i, L = selectElement.options.length - 1;
+          for(i = L; i >= 0; i--) {
+              selectElement.remove(i);
+          }
+      }
+
+
+        const links = document.getElementById("links")
+        const btn = document.getElementById("btnAdd")
+        const url = document.getElementById("url")
+        const x = document.getElementById("x")
+
+        fetch("http://localhost:8080/list")
+        .then(response => response.json())
+        .then(jsonResponse => jsonResponse.forEach(link => {
+
+            let o = document.createElement("option")
+            o.textContent = link
+            links.appendChild(o)
+
+        }))
+
+
+        btn.addEventListener("click", e => {
+                let link = url.value;
+                removeOptions(links)
+                //removeOptions(x)
+                fetch(`http://localhost:8080/list?fruit=${link}`, {"method" : "POST"})
+                .then(response => response.json())
+                .then(jsonResponse => jsonResponse.forEach(link => {
+
+                    let img = document.createElement("img");
+                    img.src = link;
+                    img.height = "500"
+                    img.width="500"
+                    x.appendChild(img)
+
+                    let o = document.createElement("option")
+                    o.textContent = link
+                    links.appendChild(o)
+
+                }))
+
+
+
+
+
+        })
+
+
+
+    </script>
+
+</body>
+</html>
