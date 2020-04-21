@@ -89,6 +89,6 @@ if (__name__ == "__main__"):
         ("/upload",uploadRequestHandler)
     ])
 
-    app.listen(8080,'10.50.49.19')
+    app.listen(80)
     print("Listening on port 8080")
     tornado.ioloop.IOLoop.instance().start()
