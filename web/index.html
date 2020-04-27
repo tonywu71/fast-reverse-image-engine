@@ -10,15 +10,14 @@
     <label>Options</label>
     <select id = 'links'></select>
     <label for = 'url' id = 'l1'>Image Url: </label><input type = 'text' id = 'url'>
-    <button id = 'btnAdd'>search images</button>
+    <button id = 'btnAdd'>search images</button><button id ='clear_results'>Clear</button>
 
     <div id = 'x'></div>
 
     <script>
-      function removeOptions(selectElement) {
-          var i, L = selectElement.options.length - 1;
-          for(i = L; i >= 0; i--) {
-              selectElement.remove(i);
+      function removeImages(divElement) {
+          while(divElement.firstElementChild != null){
+            divElement.removeChild(divElement.firstElementChild);
           }
       }
 
@@ -27,6 +26,7 @@
         const url = document.getElementById("url")
         const x = document.getElementById("x")
         const url_page = window.location.href;
+        const btn_clear = document.getElementById("clear_results")
 
         fetch(url_page+"list")
         .then(response => response.json())
@@ -53,7 +53,7 @@
 
 
         btn.addEventListener("click", e => {
-
+          removeImages(x)
           if(links.value == 'Link'){
 
                 let link = url.value;
@@ -84,7 +84,6 @@
                         img.height = "500"
                         img.width="500"
                         x.appendChild(img)
-
                       }
 
                   }
@@ -95,6 +94,8 @@
             }
 
                 })
+
+            btn_clear.addEventListener('click',e => {removeImages(x)})
 
 
 

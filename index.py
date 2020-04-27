@@ -12,7 +12,7 @@ import tornado.web
 import tornado.ioloop
 import json
 
-fe = feature_extractor(model_path='feature_extractor/models/feature_extractor_90.json',weights_path='feature_extractor/models/feature_extractor_90.h5')
+fe = feature_extractor(model_path='feature_extractor/models/feature_extractor_90_512.json',weights_path='feature_extractor/models/feature_extractor_90_512.h5')
 
 def get_similar_item(img, lsh_variable, n_items=5,url = False):
     if(url):
@@ -29,7 +29,7 @@ def get_similar_item(img, lsh_variable, n_items=5,url = False):
 
 
 
-lsh = pickle.load(open('LSHash/lsh.p', "rb"))
+lsh = pickle.load(open('LSHash/lsh3.p', "rb"))
 
 options = ['Link', 'Upload Image']
 
