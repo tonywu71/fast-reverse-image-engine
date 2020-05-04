@@ -22,6 +22,7 @@ else:
     from lshash import LSHash
     import pickle
     fe = feature_extractor(model_path='feature_extractor/models/feature_extractor_90.json',weights_path='feature_extractor/models/feature_extractor_90.h5')
+    main()
 
 def get_similar_item(img, lsh_variable, n_items=5,url = False):
     if(url):
@@ -48,5 +49,3 @@ def main():
     for i in res:
         im = load_image(i[0][1])
         im.show()
-
-main()
