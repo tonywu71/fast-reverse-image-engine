@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Image Research Engine</title>
+</head>
+<body>
+    <label>Options</label>
+    <select id = 'links'></select>
+    <label for = 'url' id = 'l1'>Image Url: </label><input type = 'text' id = 'url'>
+    <button id = 'btnAdd'>search images</button><button id ='clear_results'>Clear</button>
+
+    <div id = 'x'></div>
+
+    <script>
+      function removeImages(divElement) {
+          while(divElement.firstElementChild != null){
+            divElement.removeChild(divElement.firstElementChild);
+          }
+      }
+
+        const links = document.getElementById("links")
+        const btn = document.getElementById("btnAdd")
+        const url = document.getElementById("url")
+        const x = document.getElementById("x")
+        const url_page = window.location.href;
+        const btn_clear = document.getElementById("clear_results")
+
+        fetch(url_page+"list")
+        .then(response => response.json())
+        .then(jsonResponse => jsonResponse.forEach(link => {
+
+            let o = document.createElement("option")
+            o.textContent = link
+            links.appendChild(o)
+
+        }))
+
+        links.onchange = function(){
+          var option = links.value
+          var label = document.getElementById('l1')
+
+          if(option == 'Link'){
+            url.type = 'txt'
+            label.innerHTML = 'Image URL: '
+          }else{
+            url.type = 'file'
+            label.innerHTML = 'Choose Image: '
+          }
+        }
+
+
+        btn.addEventListener("click", e => {
+          removeImages(x)
+          if(links.value == 'Link'){
+
+                let link = url.value;
+                fetch(url_page+`list?link=${link}`, {"method" : "POST"})
+                .then(response => response.json())
+                .then(jsonResponse => jsonResponse.forEach(link => {
+
+                    let img = document.createElement("img");
+                    img.src = link;
+                    img.height = "500"
+                    img.width="500"
+                    x.appendChild(img)
+
+                  }))
+            }else{
+
+                var file = url.files[0];
+                var formData = new FormData();
+                formData.append('fileImage', file);
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'json'
+                xhr.onreadystatechange = function() {
+                  if (xhr.readyState === 4) {
+                    let res = xhr.response;
+                    for(var link in res){
+                        let img = document.createElement("img");
+                        img.src = res[link];
+                        img.height = "500"
+                        img.width="500"
+                        x.appendChild(img)
+                      }
+
+                  }
+                }
+
+                xhr.open('POST', '/upload', true);
+                xhr.send(formData);
+            }
+
+                })
+
+            btn_clear.addEventListener('click',e => {removeImages(x)})
+
+
+
+
+
+
+
+
+
+    </script>
+
+</body>
+</html>
