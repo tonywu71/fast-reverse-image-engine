@@ -63,7 +63,7 @@ class data_base:
             return result
         return result[0][0]
 
-    def get_label(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+    def get_label(self,mid): ## Gives the image identifier (MID) and returns the label to the image
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
