@@ -4,6 +4,7 @@ import keras
 from data import *
 
 class DataGenerator(keras.utils.Sequence):
+    # CHANGE NEEDED: rename lista to sth more explicit (and not in portuguese please :) )
     '''Generates data for Keras'''
     def __init__(self, list_IDs, lista,db, batch_size=32, dim=(224,224), n_channels=3,
                  n_classes=20, shuffle=True, pre = preprocess ):

@@ -1,8 +1,6 @@
 import os
 import numpy as np
-np.random.seed(0)
 import matplotlib.pyplot as plt
-%matplotlib inline
 from pylab import *
 from keras.models import Sequential
 from keras.optimizers import Adam
