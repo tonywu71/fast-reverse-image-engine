@@ -16,7 +16,6 @@ def save_model_json(model, model_path = 'models/',model_name = 'model' ):
     return
 
 def load_model_json(model_path = 'model.json', weights_path="model.h5"):
-
     json_file = open(model_path, 'r')
     loaded_model_json = json_file.read()
     json_file.close()
@@ -33,6 +32,7 @@ def preprocess_image(x):
 
 
 class feature_extractor:
+    # HEADER NEEDED '''...'''
     def __init__(self, model_path = 'models/feature_extractor1.json',weights_path = 'models/feature_extractor1.h5'):
 
         self.model = load_model_json(model_path=model_path, weights_path=weights_path)

@@ -9,11 +9,17 @@ from PIL import Image
 import requests
 from io import BytesIO as bio
 
+# CHANGE NEEDED: Please Matheus try to comment using '''...''' w/ inputs and outputs for all the function that are useful.
+
+# Below, the different categories of labels are grouped together in lists.
 media_l = ['media_comic', 'media_3d_graphics', 'media_vectorart', 'media_graphite', 'media_pen_ink', 'media_oilpaint', 'media_watercolor']
 emotions_l = ['emotion_happy', 'emotion_scary', 'emotion_gloomy', 'emotion_peaceful']
 content_l = ['content_building', 'content_flower', 'content_bicycle', 'content_people', 'content_dog', 'content_cars', 'content_cat', 'content_tree', 'content_bird']
 
 def load_image(url = ''):
+    # FIX NEEDED: wrong behaviour with the except, maybe just raise an error?
+    # FEATURE NEEDED: maybe in another function, but create a function that detects if the image is inexistent, 
+    # so it'll make easier for Lucie to clean up the data base.
     try:
         reponse = requests.get(url)
         img = Image.open(bio(reponse.content))
@@ -26,10 +32,12 @@ def show_image(img):
     return
 
 def preprocess(x):
+    # I don't quite understand why you have to convert x to an array, maybe you could explain it quickly?
     return np.array(x)
 
 
 class data_base:
+    # COMMENT NEEDED: Just a quick description of the class
     def __init__(self, file_path = 'data.sqlite'):
         self.file_path = file_path
         self.mids = []
@@ -50,6 +58,7 @@ class data_base:
         self.classes_labels_media = {self.classes_media[i]:i for i in self.classes_media}
 
     def get_image(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
@@ -64,6 +73,7 @@ class data_base:
         return result[0][0]
 
     def get_label(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
@@ -81,6 +91,7 @@ class data_base:
         return labels
 
     def get_label_labels(self,mid,label): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         labels_aux = []
@@ -101,6 +112,7 @@ class data_base:
         return labels
 
     def return_classes(self,mid):
+        # HEADER NEEDED '''...'''
         labels = self.get_label(mid)
         classes = []
         for i in range(len(labels)):
@@ -110,6 +122,7 @@ class data_base:
         return classes
 
     def get_label_emotions(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # Also we've talked about it the 4th of May but maybe just replace the code with return get_label_labels(self,mid,label=emotions_l)
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
@@ -150,6 +163,7 @@ class data_base:
 
     def get_images_(self,n=100000 ):
         ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
 
         ### Importing data
         conn = sql.connect(self.file_path)
@@ -173,6 +187,7 @@ class data_base:
 
     def get_images(self,n=100000 ):
         ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
 
         ### Importing data
         proportion = n//5;
@@ -210,6 +225,7 @@ class data_base:
 
     def get_images_emotions(self,n=100000 ):
         ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
 
         ### Importing data
         conn = sql.connect(self.file_path)
@@ -240,6 +256,7 @@ class data_base:
 
     def get_images_media(self,n=100000 ):
     ### creating a cursor to the data base to use SQL commands
+    # HEADER NEEDED '''...'''
 
     ### Importing data
         conn = sql.connect(self.file_path)
@@ -272,6 +289,7 @@ class data_base:
 
     def get_images_labels(self,n=10000,labels=[]):
         ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
 
         ### Importing data
         proportion = n//len(labels);
@@ -308,6 +326,7 @@ class data_base:
         return IDs
 
     def get_label_media(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
