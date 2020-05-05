@@ -15,7 +15,7 @@ import scipy.spatial.distance as dist
 from storage import storage
 from PIL import Image
 
-from LSHash.lshash import *
+from lshash import *
 
 class BoundBox:
 	def __init__(self, xmin, ymin, xmax, ymax, objness = None, classes = None):
