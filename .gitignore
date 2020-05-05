@@ -1,0 +1,8 @@
+*.ipynb
+*.pyc
+*.sqlite
+test.py
+*.h5
+*.json
+*.md
+*.p
