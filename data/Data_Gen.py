@@ -1,7 +1,8 @@
 import numpy as np
 import keras
 
-from data import *
+from data.data import *
+# from data.data import load_image
 
 
 class DataGenerator(keras.utils.Sequence):
@@ -9,7 +10,7 @@ class DataGenerator(keras.utils.Sequence):
     # I think it is the list of classes, if that's it please rename it ASAP.
     '''Generates data for Keras'''
     def __init__(self, list_IDs, lista,db, batch_size=32, dim=(224,224), n_channels=3,
-                 n_classes=20, shuffle=True, pre = lambda x=np.array(x) ):
+                 n_classes=20, shuffle=True, pre=lambda x: np.array(x)):
         # Initialization
         self.dim = dim
         self.batch_size = batch_size
@@ -44,6 +45,22 @@ class DataGenerator(keras.utils.Sequence):
         self.indexes = np.arange(len(self.list_IDs))
         if self.shuffle == True:
             np.random.shuffle(self.indexes)
+
+    def load_image(url = ''):
+        ## I've copied this from data.py because of the error I've sent to you on WhatsApp.
+
+
+        # FIX NEEDED: wrong behaviour with the except, maybe just raise an error?
+        # FEATURE NEEDED: maybe in another function, but create a function that detects if the image is inexistent, 
+        # so it'll make easier for Lucie to clean up the data base.
+        try:
+            reponse = requests.get(url)
+            img = Image.open(bio(reponse.content))
+            return img
+        except:
+            return load_image(url = 'https://rhyshonemusic.files.wordpress.com/2013/03/munch-scream-by-pastiche.jpg')
+
+
 
     def __data_generation(self, list_IDs_temp):
         '''Generates data containing batch_size samples''' # X : (n_samples, *dim, n_channels)
