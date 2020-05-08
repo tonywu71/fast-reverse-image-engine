@@ -3,11 +3,13 @@ import keras
 
 from data import *
 
+
 class DataGenerator(keras.utils.Sequence):
     # CHANGE NEEDED: rename lista to sth more explicit (and not in portuguese please :) )
+    # I think it is the list of classes, if that's it please rename it ASAP.
     '''Generates data for Keras'''
     def __init__(self, list_IDs, lista,db, batch_size=32, dim=(224,224), n_channels=3,
-                 n_classes=20, shuffle=True, pre = preprocess ):
+                 n_classes=20, shuffle=True, pre = lambda x=np.array(x) ):
         # Initialization
         self.dim = dim
         self.batch_size = batch_size
