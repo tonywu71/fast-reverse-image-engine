@@ -46,20 +46,6 @@ class DataGenerator(keras.utils.Sequence):
         if self.shuffle == True:
             np.random.shuffle(self.indexes)
 
-    def load_image(url = ''):
-        ## I've copied this from data.py because of the error I've sent to you on WhatsApp.
-
-
-        # FIX NEEDED: wrong behaviour with the except, maybe just raise an error?
-        # FEATURE NEEDED: maybe in another function, but create a function that detects if the image is inexistent, 
-        # so it'll make easier for Lucie to clean up the data base.
-        try:
-            reponse = requests.get(url)
-            img = Image.open(bio(reponse.content))
-            return img
-        except:
-            return load_image(url = 'https://rhyshonemusic.files.wordpress.com/2013/03/munch-scream-by-pastiche.jpg')
-
 
 
     def __data_generation(self, list_IDs_temp):
