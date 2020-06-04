@@ -1,7 +1,7 @@
 import numpy as np
 import keras
 
-from data.data import *
+from data import *
 # from data.data import load_image
 
 
