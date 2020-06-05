@@ -4,3 +4,4 @@ test.py
 *.h5
 *.json
 *.p
+/data_training
