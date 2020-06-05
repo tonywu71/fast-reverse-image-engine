@@ -1,5 +1,6 @@
 import numpy as np
 import keras
+import os
 
 from data import *
 # from data.data import load_image
@@ -61,6 +62,32 @@ class DataGenerator(keras.utils.Sequence):
             #X[i,] = np.load('data/' + ID + '.npy')
             image_url = self.db.get_image(ID)
             image = load_image(image_url)
+            X[i,] = self.pre(image)
+
+            # Store class
+            y[i] = self.db.get_label_labels(ID,self.lista)
+
+        return X, y
+
+class DataGenerator_training(DataGenerator):
+    '''Special class for training that inherits from the DataGenerator class.'''
+
+    def __data_generation(self, list_IDs_temp):
+        '''Generates data containing batch_size samples'''
+
+        training_directory = 'training_data'
+
+        # Initialisation
+        X = np.empty((self.batch_size, self.dim[0],self.dim[1], self.n_channels))
+        y = np.empty((self.batch_size,self.n_classes), dtype=int)
+
+        # Generate data
+        for i, ID in enumerate(list_IDs_temp):
+            # Store sample
+
+            ## HERE ARE THE CHANGES!!
+            img_path = os.path.join(training_directory, str(ID))
+            image = Image.open(img_path)
             X[i,] = self.pre(image)
 
             # Store class
