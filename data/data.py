@@ -9,11 +9,17 @@ from PIL import Image
 import requests
 from io import BytesIO as bio
 
+# CHANGE NEEDED: Please Matheus try to comment using '''...''' w/ inputs and outputs for all the function that are useful.
+
+# Below, the different categories of labels are grouped together in lists.
 media_l = ['media_comic', 'media_3d_graphics', 'media_vectorart', 'media_graphite', 'media_pen_ink', 'media_oilpaint', 'media_watercolor']
 emotions_l = ['emotion_happy', 'emotion_scary', 'emotion_gloomy', 'emotion_peaceful']
 content_l = ['content_building', 'content_flower', 'content_bicycle', 'content_people', 'content_dog', 'content_cars', 'content_cat', 'content_tree', 'content_bird']
 
 def load_image(url = ''):
+    # FIX NEEDED: wrong behaviour with the except, maybe just raise an error?
+    # FEATURE NEEDED: maybe in another function, but create a function that detects if the image is inexistent, 
+    # so it'll make easier for Lucie to clean up the data base.
     try:
         reponse = requests.get(url)
         img = Image.open(bio(reponse.content))
@@ -26,10 +32,12 @@ def show_image(img):
     return
 
 def preprocess(x):
+    # I don't quite understand why you have to convert x to an array, maybe you could explain it quickly?
     return np.array(x)
 
 
 class data_base:
+    # COMMENT NEEDED: Just a quick description of the class
     def __init__(self, file_path = 'data.sqlite'):
         self.file_path = file_path
         self.mids = []
@@ -50,6 +58,7 @@ class data_base:
         self.classes_labels_media = {self.classes_media[i]:i for i in self.classes_media}
 
     def get_image(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
@@ -64,6 +73,7 @@ class data_base:
         return result[0][0]
 
     def get_label(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
@@ -81,6 +91,7 @@ class data_base:
         return labels
 
     def get_label_labels(self,mid,label): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         labels_aux = []
@@ -100,7 +111,12 @@ class data_base:
                 labels.append(0)
         return labels
 
+<<<<<<< HEAD
     def return_classes(self,mid): # return the classes that a image belongs
+=======
+    def return_classes(self,mid):
+        # HEADER NEEDED '''...'''
+>>>>>>> a03c9d1b4da23ee7e22ca7c099dc7bf6668a5538
         labels = self.get_label(mid)
         classes = []
         for i in range(len(labels)):
@@ -110,6 +126,7 @@ class data_base:
         return classes
 
     def get_label_emotions(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # Also we've talked about it the 4th of May but maybe just replace the code with return get_label_labels(self,mid,label=emotions_l)
         conn = sql.connect(self.file_path)
         cursor = conn.cursor()
         cursor.execute('''
@@ -133,6 +150,7 @@ class data_base:
 
     def get_images_(self,n=100000 ): # return the n images
         ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
 
         ### Importing data
         conn = sql.connect(self.file_path)
@@ -156,6 +174,7 @@ class data_base:
 
     def get_images(self,n=100000 ): # return n images but with good proportion between classes
         ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
 
         ### Importing data
         proportion = n//5;
@@ -191,9 +210,76 @@ class data_base:
         self.mids = IDs
         return IDs
 
+<<<<<<< HEAD
+=======
+    def get_images_emotions(self,n=100000 ):
+        ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
+
+        ### Importing data
+        conn = sql.connect(self.file_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+           SELECT MODULES.mid, AUTOMATIC_LABELS.emotion_happy, AUTOMATIC_LABELS.emotion_gloomy,  AUTOMATIC_LABELS.emotion_scary, AUTOMATIC_LABELS.emotion_peaceful
+           FROM MODULES
+           INNER JOIN AUTOMATIC_LABELS on MODULES.mid = AUTOMATIC_LABELS.mid
+           Where AUTOMATIC_LABELS.emotion_happy = 'positive' OR AUTOMATIC_LABELS.emotion_gloomy = 'positive' OR AUTOMATIC_LABELS.emotion_scary = 'positive'
+           OR AUTOMATIC_LABELS.emotion_peaceful = 'positive'
+           limit ?
+        ''',(n,))
+
+        results = cursor.fetchall()
+        images = {}
+        random.shuffle(results)
+        IDs = []
+        i = 0;
+        for img in results:
+            #label = self.get_label_emotions(img[0])
+            #if(1 not in label):
+            #    continue;
+            IDs.append(img[0])
+            #print(img)
+            #print(img[0],"\n")
+        self.mids = IDs
+        return IDs
+
+    def get_images_media(self,n=100000 ):
+    ### creating a cursor to the data base to use SQL commands
+    # HEADER NEEDED '''...'''
+
+    ### Importing data
+        conn = sql.connect(self.file_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+        SELECT MODULES.mid, AUTOMATIC_LABELS.media_comic AUTOMATIC_LABELS.media_3d_graph,  AUTOMATIC_LABELS.media_vectorart, AUTOMATIC_LABELS.media_graphite
+        AUTOMATIC_LABELS.media_pen_ink AUTOMATIC_LABELS.media_oilpaint AUTOMATIC_LABELS.media_watercolor
+        FROM MODULES
+        INNER JOIN AUTOMATIC_LABELS on MODULES.mid = AUTOMATIC_LABELS.mid
+        Where AUTOMATIC_LABELS.media_comic = 'positive' OR AUTOMATIC_LABELS.media_3d_graph = 'positive' OR AUTOMATIC_LABELS.media_vectorart = 'positive'
+        OR AUTOMATIC_LABELS.media_graphite= 'positive' OR AUTOMATIC_LABELS.media_pen_ink= 'positive' OR AUTOMATIC_LABELS.media_oilpaint= 'positive'
+        OR AUTOMATIC_LABELS.media_watercolor= 'positive'
+        limit ?
+        ''',(n,))
+
+        results = cursor.fetchall()
+        images = {}
+        random.shuffle(results)
+        IDs = []
+        i = 0;
+        for img in results:
+            #label = self.get_label_emotions(img[0])
+            #if(1 not in label):
+            #    continue;
+            IDs.append(img[0])
+            #print(img)
+            #print(img[0],"\n")
+        self.mids = IDs
+        return IDs
+>>>>>>> a03c9d1b4da23ee7e22ca7c099dc7bf6668a5538
 
     def get_images_labels(self,n=10000,labels=[]): # return the n images that belongs to the classes that are in labels
         ### creating a cursor to the data base to use SQL commands
+        # HEADER NEEDED '''...'''
 
         ### Importing data
         proportion = n//len(labels);
@@ -229,6 +315,58 @@ class data_base:
         self.mids = IDs
         return IDs
 
+<<<<<<< HEAD
+=======
+    def get_label_media(self,mid): ## Gives the image identifier (MID) and returns the link to the image
+        # HEADER NEEDED '''...'''
+        conn = sql.connect(self.file_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT MID, media_comic, media_3d_graph, media_vectorart,
+            media_graphite, media_pen_ink, media_oilpaint, media_watercolor WHERE MID = ?
+            ''',(mid,))
+        result = cursor.fetchall()
+        result = list(result[0])
+        #print(result)
+        labels = []
+        #print(result)
+        for i in result[1:]:
+            if(i.lower() == 'positive' and not i.lower() == 'unsure' ):
+                labels.append(1)
+            else:
+                labels.append(0)
+
+        return labels
+
+    def train_test_split(self,n = 1000,test_frac = 0.3, preprocess = preprocess):
+        if(len(self.mids) == 0):
+            self.get_images(n)
+        train_x = []
+        train_y = []
+        test_x = []
+        test_y = []
+
+        for i in range(int((1-test_frac)*n)):
+            mid = self.mids[i][0]
+            url = self.get_image(mid)
+            x = load_image(url)
+            x = preprocess(x)
+            train_x.append(x)
+            train_y.append(self.get_label(mid))
+
+        #print(train_x)
+        for i in range(int((1-test_frac)*n),n):
+            mid = self.mids[i][0]
+            url = self.get_image(mid)
+            x = load_image(url)
+            x = preprocess(x)
+            test_x.append(x)
+            test_y.append(self.get_label(mid))
+
+        return train_x, train_y, test_x, test_y
+
+
+>>>>>>> a03c9d1b4da23ee7e22ca7c099dc7bf6668a5538
 
 def tests():
     db = data_base()
