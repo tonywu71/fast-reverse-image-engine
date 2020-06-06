@@ -5,3 +5,4 @@ test.py
 *.json
 *.p
 /data_training
+*-checkpoint.ipynb
