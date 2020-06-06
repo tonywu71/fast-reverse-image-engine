@@ -2,8 +2,20 @@ import numpy as np
 import keras
 import os
 
-from data.data import *
-# from data.data import load_image
+from data import *
+#from data import load_image
+
+
+def load_image(url = ''):
+    # FIX NEEDED: wrong behaviour with the except, maybe just raise an error?
+    # FEATURE NEEDED: maybe in another function, but create a function that detects if the image is inexistent, 
+    # so it'll make easier for Lucie to clean up the data base.
+    try:
+        reponse = requests.get(url)
+        img = Image.open(bio(reponse.content))
+        return img
+    except:
+        return load_image(url = 'https://rhyshonemusic.files.wordpress.com/2013/03/munch-scream-by-pastiche.jpg')
 
 
 class DataGenerator(keras.utils.Sequence):
@@ -72,13 +84,16 @@ class DataGenerator(keras.utils.Sequence):
 class DataGenerator_training(DataGenerator):
     '''Special class for training that inherits from the DataGenerator class.'''
 
+    def __init__(self, list_IDs, lista,db, batch_size=32, dim=(224,224), n_channels=3,
+            n_classes=20, shuffle=True, pre=lambda x: np.array(x)):
+        self.training_directory = 'training_data'
+        
+        super().__init__(list_IDs, lista,db, batch_size=32, dim=(224,224), n_channels=3,
+            n_classes=20, shuffle=True, pre=lambda x: np.array(x))
+
+
     def __data_generation(self, list_IDs_temp):
         '''Generates data containing batch_size samples'''
-
-        def __init__(self, list_IDs_temp):
-            self.training_directory = 'training_data'
-            super().__init__(list_IDs_temp)
-        
 
         # Initialisation
         X = np.empty((self.batch_size, self.dim[0],self.dim[1], self.n_channels))
