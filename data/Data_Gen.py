@@ -2,7 +2,7 @@ import numpy as np
 import keras
 import os
 
-from data import *
+from data.data import *
 # from data.data import load_image
 
 
@@ -75,7 +75,10 @@ class DataGenerator_training(DataGenerator):
     def __data_generation(self, list_IDs_temp):
         '''Generates data containing batch_size samples'''
 
-        training_directory = 'training_data'
+        def __init__(self, list_IDs_temp):
+            self.training_directory = 'training_data'
+            super().__init__(list_IDs_temp)
+        
 
         # Initialisation
         X = np.empty((self.batch_size, self.dim[0],self.dim[1], self.n_channels))
@@ -86,7 +89,7 @@ class DataGenerator_training(DataGenerator):
             # Store sample
 
             ## HERE ARE THE CHANGES!!
-            img_path = os.path.join(training_directory, str(ID))
+            img_path = os.path.join(self.training_directory, str(ID))
             image = Image.open(img_path)
             X[i,] = self.pre(image)
 
