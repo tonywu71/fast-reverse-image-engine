@@ -1,6 +1,6 @@
 # Projet Navee
 
-Nous avons implémenté un moteur de recherche d'images inversée, c'est-à-dire que pour une image donnée, l'algorithme renvoie les images les plus similaires qu'il possède dans la base de données.
+Nous avons implémenté un moteur de recherche d'images inversée, c'est-à-dire que pour une image donnée, l'algorithme renvoie les images les plus similaires qu'il possède dans la base de données. L'objectif a été de fournir le modèle le plus précis possible tout en imposant une grande performance en terme de vitesse.
 
 Il est divisé en trois grandes parties :
 
