@@ -1,6 +1,6 @@
 # Projet Navee
 
-Ce travail est un moteur de recherche d'images inversées, c'est-à-dire qu'à partir d'une image, il vous renvoie les images les plus similaires qu'il possède dans la base de données.
+Nous avons implémenté un moteur de recherche d'images inversées, c'est-à-dire que pour une image donnée, l'algorithme renvoie les images les plus similaires qu'il possède dans la base de données.
 
 Il est divisé en trois grandes parties :
 
